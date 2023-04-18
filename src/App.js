@@ -3,9 +3,8 @@ import React from "react"
 import styled from "styled-components"
 
 import Header from "./components/Header"
-import Footer from "./components/Footer"
 import Main from "./pages/Main"
-import About from "./pages/About"
+// import About from "./pages/About"
 
 function App() {
   return (
@@ -16,7 +15,6 @@ function App() {
           <Route path="/" element={<Main />} />
           {/* <Route path="/sobre" element={<About />} /> */}
         </Routes>
-        <Footer />
       </Container>
     </BrowserRouter>
   )
