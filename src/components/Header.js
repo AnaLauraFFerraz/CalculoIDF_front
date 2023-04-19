@@ -1,18 +1,22 @@
-import { Link } from "react-router-dom"
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 export default function Header() {
+    const navigate = useNavigate();
+
+    function navAbout() {
+        navigate("/sobre")
+    }
+
     return (
-        <Title>
+        <Container>
             <h1>Cálculo IDF</h1>
-            <Link to={`/sobre`}>
-                <h2>Sobre</h2>
-            </Link>
-        </Title>
+            <button onClick={navAbout}>Sobre</button>
+        </Container>
     )
 }
 
-const Title = styled.header`
+const Container = styled.header`
     display:flex;
     width: 100%;
     height: 80px;
@@ -21,7 +25,6 @@ const Title = styled.header`
     left: 0;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 80px;
     padding: 0 30px;
     background-color: #008EF4;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
@@ -32,7 +35,7 @@ const Title = styled.header`
         font-weight: 700;
         line-height: 40px;
     }
-    h2 {
+    button {
         color: white;
         font-size: 34px;
         font-weight: 400;
