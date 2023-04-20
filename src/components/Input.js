@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import axios from 'axios';
 
-
-export default function Input() {
+export default function Input({ onUpload }) {
   const [csvFile, setCsvFile] = useState(null);
 
   function handleFileUpload(e) {
@@ -11,52 +9,29 @@ export default function Input() {
     setCsvFile(file);
   }
 
-  async function uploadCSV() {
-    if (!csvFile) {
-      alert('Por favor, selecione um arquivo CSV');
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append('file', csvFile);
-
-    try {
-      const response = await axios.post('http://localhost:5000/upload', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-
-      if (response.status === 200) {
-        const jsonResponse = response.data;
-        // Faça algo com a resposta JSON
-      }
-    } catch (error) {
-      console.error('Erro ao fazer upload do arquivo CSV:', error);
-    }
-  }
-
   return (
     <Container>
       <h1>Upload de arquivo CSV</h1>
       <FileInput type="file" accept=".csv" onChange={handleFileUpload} />
-      <UploadButton onClick={uploadCSV}>Upload</UploadButton>
+      <UploadButton onClick={() => onUpload && onUpload(csvFile)}>Upload</UploadButton>
     </Container>
   );
 }
-  
 
 const Container = styled.div`
-  margin-top: 80px;
+  margin-top: 40px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   padding: 20px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 `;
 
 const FileInput = styled.input`
-  margin: 10px;
+  margin: 20px 0;
 `;
 
 const UploadButton = styled.button`
@@ -67,8 +42,8 @@ const UploadButton = styled.button`
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  font-weight: bold;
   &:hover {
     background-color: #0056b3;
   }
 `;
-

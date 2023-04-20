@@ -1,21 +1,54 @@
-import styled from "styled-components"
-import Input from "../components/Input"
+import React, { useState } from "react";
+import styled from "styled-components";
+import axios from "axios";
+
+import Input from "../components/Input";
+import Report from "../components/Report";
 
 export default function Main() {
+  const [idfData, setIdfData] = useState(null);
 
-    return (
-        <Container>
-            <Input />
-            {/* <Report /> */}
-        </Container>
-    )
+  async function uploadCSV(csvFile) {
+    if (!csvFile) {
+      alert("Por favor, selecione um arquivo CSV");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", csvFile);
+
+    const BASE_URL = "http://localhost:5000";
+
+    try {
+      const response = await axios.post(`${BASE_URL}/upload`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      if (response.status === 200) {
+        const jsonResponse = response.data;
+        setIdfData(jsonResponse);
+      }
+    } catch (error) {
+      console.error("Erro ao fazer upload do arquivo CSV: \n", error);
+    }
+  }
+
+  return (
+    <Container>
+      <Input onUpload={(file) => uploadCSV(file)} />
+      <Report data={idfData} />
+    </Container>
+  );
 }
 
 const Container = styled.div`
-    display: flex;
-    flex-direction: column;
-    width: 100vw;
-    height: 100vw;
-    padding: 120px 50px 50px 50px;
-    box-sizing: border-box;
-`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100vw;
+  min-height: calc(100vh - 80px);
+  padding: 140px 50px 50px 50px;
+  box-sizing: border-box;
+`;
