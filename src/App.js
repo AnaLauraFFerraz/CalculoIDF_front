@@ -27,5 +27,5 @@ const Container = styled.main`
   min-width: 375px;
   height: 100%;
   min-height: 667px;
-  background-color: lightgray;
+  background-color: #f5f5f5;
 `;
