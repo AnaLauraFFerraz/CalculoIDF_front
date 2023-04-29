@@ -27,6 +27,12 @@ footer, header, hgroup, menu, nav, section {
 }
 body {
 	line-height: 1;
+	background-color: #f5f5f5;
+  	font-family: 'Roboto';
+	width: 100vw;
+	min-width: 375px;
+	height: 100vh;
+	min-height: 667px;
 }
 ol, ul {
 	list-style: none;
