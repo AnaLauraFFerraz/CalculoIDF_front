@@ -4,30 +4,28 @@ import styled from "styled-components";
 // ----------------- Input -----------------
 // -----------------------------------------
 
-export const InputWrapper = styled.div`
+export const InputWrapper = styled.form`
   display: flex;
   align-items: center;
-  justify-content: center;
-  width: 80%;
-  min-width: 650px;
+  justify-content: space-between;
+  min-width: 600px;
   height: 90px;
-  padding: 10px;
+  padding: 0 20px;
   margin-top: 30px;
-  background-color: #ffffff;
+  background-color: #FFFFFF;
   border-radius: 8px;
   box-sizing: border-box;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
 `
 export const FileInput = styled.input`
   display: flex;
-  width: 200px;
+  align-items: center;
+  justify-content: center;
   min-width:175px;
-  height: 40px;
   margin-right: 20px;
-  border-radius: 5px;
-  border: 3px;
+  flex-wrap: wrap;
   background-color: #FFFFFF;
-  color: #000;
+  color: #000000;
   text-decoration: none;
   font-size: 16px;
   cursor: pointer;
