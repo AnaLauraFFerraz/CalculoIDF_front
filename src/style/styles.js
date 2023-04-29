@@ -16,9 +16,10 @@ export const InputWrapper = styled.div`
   background-color: #ffffff;
   border-radius: 8px;
   box-sizing: border-box;
-  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
 `
 export const FileInput = styled.input`
+  display: flex;
   width: 200px;
   min-width:175px;
   height: 40px;
@@ -26,21 +27,11 @@ export const FileInput = styled.input`
   border-radius: 5px;
   border: 3px;
   background-color: #FFFFFF;
-  color: blue;
-  /* text-decoration: underline; */
+  color: #000;
+  text-decoration: none;
   font-size: 16px;
   cursor: pointer;
-  &:hover {
-    cursor: pointer;
-  }
 `
-
-export const FileName = styled.p`
-  min-width: 300px;
-  font-size: 16px;
-  flex-wrap: wrap;
-`
-
 export const SubmitButton = styled.button`
   width: 120px;
   min-width: 100px;
@@ -98,3 +89,41 @@ export const Textarea = styled.textarea`
   height: 200px;
   resize: none;
 `
+
+// -----------------------------------------
+// ----------------- Header ----------------
+// -----------------------------------------
+
+export const HeaderContainer = styled.header`
+  display: flex;
+  width: 100%;
+  height: 60px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 40px;
+  background-color: #023670;
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.2);
+  box-sizing: border-box;
+  line-height: 40px;
+  h1 {
+    color: white;
+    font-size: 28px;
+    font-weight: 500;
+  }
+  a {
+    color: white;
+    font-size: 20px;
+    font-weight: 400;
+    border: none;
+    text-decoration: none;
+    cursor: pointer;
+    &:hover {
+      opacity: 0.8;
+      text-decoration: underline;
+      text-decoration-thickness: 1px;
+    }
+  }
+`;
