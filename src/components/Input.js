@@ -9,8 +9,15 @@ export default function Input({ onUpload }) {
     setCsvFile(file);
   }
 
+  function handleSubmit(e) {
+    e.preventDefault();
+    if (onUpload) {
+      onUpload(csvFile);
+    }
+  }
+
   return (
-    <InputWrapper onSubmit={() => onUpload && onUpload(csvFile)}>
+    <InputWrapper action="/upload" method="post" enctype="multipart/form-data" onSubmit={handleSubmit}>
       <FileInput
         id="fileInput"
         type="file"
@@ -18,7 +25,8 @@ export default function Input({ onUpload }) {
         onChange={handleFileUpload}
       />
       <SubmitButton type="submit">
-        Upload</SubmitButton>
+        Upload
+      </SubmitButton>
     </InputWrapper>
   );
 }
