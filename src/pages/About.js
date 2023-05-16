@@ -27,11 +27,10 @@ const Container = styled.div`
     align-items: center;
     width: 100vw;
     height: 100vw;
-    max-width: 600px;
+    min-height: calc(100vh - 80px);
+    padding: 100px 50px 50px 50px;
     margin-top: 80px;
-    padding: 15px;
     box-sizing: border-box;
-    background-color: #ffffff;
     border-radius: 8px;
     padding: 20px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -45,6 +44,7 @@ const Title = styled.h1`
 `;
 
 const Text = styled.p`
+    max-width: 600px;
     font-size: 1rem;
     line-height: 1.6;
     color: #333;
@@ -53,14 +53,17 @@ const Text = styled.p`
 `;
 
 const BackButton = styled.button`
-  margin-top: 20px;
-  padding: 10px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  &:hover {
-    background-color: #0056b3;
-  }
+    width: 100px;
+    height: 40px;
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    cursor: pointer;
+    &:hover {
+        background-color: #0056b3;
+    }
 `;
