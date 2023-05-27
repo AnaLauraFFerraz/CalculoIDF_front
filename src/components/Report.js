@@ -22,20 +22,27 @@ export default function Report({ data }) {
     );
   }
 
-  function processDataForChart(data) {
-    return Object.keys(data).map((key) => ({
-      name: key,
-      "Tempo de Retorno (anos)": data[key]["Tr (anos)"],
-      "i Real": data[key]["i_real"],
-      "i Calculado": data[key]["i_calculado"],
+  const chartData = processDataForChart(data.graph_data);
+
+  function processDataForChart(graph_data) {
+    const { F, P_dist } = graph_data;
+    return F.map((f, index) => ({
+      name: index,
+      "F": f,
+      "Pmax": P_dist[index],
     }));
   }
-
-  const chartData = processDataForChart(data);
-
+  
   return (
     <ReportWrapper>
       <h2>Dados IDF</h2>
+
+      {data.sample_size_above_30_years === false && (
+        <WarningMessage>
+          Atenção: A amostra possui menos de 30 anos, ...
+        </WarningMessage>
+      )}
+
       <ChartWrapper>
         <LineChart
           width={600}
@@ -48,38 +55,58 @@ export default function Report({ data }) {
           <YAxis />
           <Tooltip />
           <Legend />
-          <Line type="monotone" dataKey="Tempo de Retorno (anos)" stroke="#8884d8" activeDot={{ r: 8 }} />
-          <Line type="monotone" dataKey="i Real" stroke="#82ca9d" />
-          <Line type="monotone" dataKey="i Calculado" stroke="#ff7300" />
+          <Line type="monotone" dataKey="F" stroke="#8884d8" activeDot={{ r: 8 }} />
+          <Line type="monotone" dataKey="Pmax" stroke="#82ca9d" />
         </LineChart>
       </ChartWrapper>
+
       <Table>
         <thead>
           <tr>
-            <th>Índice</th>
-            <th>Tempo de Retorno (anos)</th>
-            <th>Coeficiente de Agregação</th>
-            <th>i Real</th>
-            <th>i Calculado</th>
-            <th>Erro Relativo</th>
+            <th>Intervalo</th>
+            <th>k</th>
+            <th>m</th>
+            <th>c</th>
+            <th>n</th>
           </tr>
         </thead>
         <tbody>
-          {Object.keys(data).map((key) => {
-            const rowData = data[key];
-            return (
-              <tr key={key}>
-                <td>{key}</td>
-                <td>{rowData["Tr (anos)"]}</td>
-                <td>{rowData["td (min)"]}</td>
-                <td>{rowData["i_real"]}</td>
-                <td>{rowData["i_calculado"]}</td>
-                <td>{rowData["erro_relativo"]}</td>
-              </tr>
-            );
-          })}
+          <tr>
+            <td>Intervalo 1 (5 &le; td &le; 60)</td>
+            <td>{data.parameters.parameters_1.k1}</td>
+            <td>{data.parameters.parameters_1.m1}</td>
+            <td>{data.parameters.parameters_1.c1}</td>
+            <td>{data.parameters.parameters_1.n1}</td>
+          </tr>
+          <tr>
+            <td>Intervalo 2 (60 &le; td &le; 1440)</td>
+            <td>{data.parameters.parameters_2.k2}</td>
+            <td>{data.parameters.parameters_2.m2}</td>
+            <td>{data.parameters.parameters_2.c2}</td>
+            <td>{data.parameters.parameters_2.n2}</td>
+          </tr>
         </tbody>
       </Table>
+      
+      <Table>
+        <thead>
+          <tr>
+            <th>Intervalo</th>
+            <th>Erro Relativo Médio</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Intervalo 1 (5 &le; td &le; 60)</td>
+            <td>{data.mean_relative_errors.interval_1}</td>
+          </tr>
+          <tr>
+            <td>Intervalo 2 (60 &le; td &le; 1440)</td>
+            <td>{data.mean_relative_errors.interval_2}</td>
+          </tr>
+        </tbody>
+      </Table>
+
     </ReportWrapper>
   );
 }
@@ -108,6 +135,12 @@ const ReportWrapper = styled.div`
   padding: 20px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 `;
+
+const WarningMessage = styled.div`
+  display: flex;
+  width: 150px;
+  height: 80px;
+`
 
 const Table = styled.table`
   border-collapse: collapse;
