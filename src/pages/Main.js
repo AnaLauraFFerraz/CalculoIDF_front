@@ -17,7 +17,8 @@ export default function Main() {
     const formData = new FormData();
     formData.append("file", csvFile);
 
-    const BASE_URL = process.env.BASE_URL || "http://localhost:5000";
+    const BASE_URL = process.env.REACT_APP_BASE_URL;
+    console.log("BASE_URL=", BASE_URL)
 
     try {
       const response = await axios.post(`${BASE_URL}/upload`, formData, {
