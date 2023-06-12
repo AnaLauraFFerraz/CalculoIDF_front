@@ -18,7 +18,6 @@ export default function Main() {
     formData.append("file", csvFile);
 
     const BASE_URL = process.env.REACT_APP_BASE_URL;
-    console.log("BASE_URL=", BASE_URL)
 
     try {
       const response = await axios.post(`${BASE_URL}/upload`, formData, {
@@ -31,6 +30,7 @@ export default function Main() {
         const jsonResponse = response.data;
         setIdfData(jsonResponse);
       }
+      console.log(idfData)
     } catch (error) {
       console.error("Erro ao fazer upload do arquivo CSV: \n", error);
       alert("Erro ao fazer upload do arquivo. \nTente novamente.");
