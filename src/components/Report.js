@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from "recharts";
 import { ChartWrapper } from "../style/styles";
+
 export default function Report({ data }) {
   if (!data) {
     return (
@@ -51,12 +52,11 @@ export default function Report({ data }) {
           margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" />
+          <XAxis dataKey="Precipitação máxima anual (mm)" />
           <YAxis />
           <Tooltip />
           <Legend />
-          <Line type="monotone" dataKey="F" stroke="#8884d8" activeDot={{ r: 8 }} />
-          <Line type="monotone" dataKey="Pmax" stroke="#82ca9d" />
+          <Line type="monotone" dataKey="Probabilidade de excedência (%)" stroke="#8884d8" activeDot={{ r: 8 }} />
         </LineChart>
       </ChartWrapper>
 
