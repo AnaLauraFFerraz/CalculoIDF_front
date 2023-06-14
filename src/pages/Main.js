@@ -29,14 +29,18 @@ export default function Main() {
       if (response.status === 200) {
         const jsonResponse = response.data;
         setIdfData(jsonResponse);
+      } else if (response.status === 400) {
+        alert("Erro 400: Requisição inválida. Verifique o arquivo CSV e tente novamente.");
+      } else if (response.status === 500) {
+        alert("Erro 500: Erro interno do servidor. Tente novamente mais tarde.");
+      } else {
+        alert(`Erro desconhecido: ${response.status}. Tente novamente mais tarde.`);
       }
-      console.log(idfData)
     } catch (error) {
-      console.error("Erro ao fazer upload do arquivo CSV: \n", error);
       alert("Erro ao fazer upload do arquivo. \nTente novamente.");
     }
   }
-
+  
   return (
     <Container>
       <Input onUpload={(file) => handleCSV(file)} />
