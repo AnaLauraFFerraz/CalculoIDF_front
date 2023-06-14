@@ -1,7 +1,13 @@
 import React from "react";
-import styled from "styled-components";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from "recharts";
-import { ChartWrapper } from "../style/styles";
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Label } from "recharts";
+import { 
+  ReportWrapper,
+  MessageContainer,
+  Message,
+  WarningMessage,
+  ChartWrapper,
+  Table
+} from "../style/styles";
 
 export default function Report({ data }) {
   if (!data) {
@@ -24,6 +30,7 @@ export default function Report({ data }) {
   }
 
   const chartData = processDataForChart(data.graph_data);
+  console.log(chartData)
 
   function processDataForChart(graph_data) {
     const { F, P_dist } = graph_data;
@@ -52,11 +59,14 @@ export default function Report({ data }) {
           margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
         >
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="Precipitação máxima anual (mm)" />
-          <YAxis />
+          <XAxis dataKey="Pmax">
+            <Label value="Precipitação máxima anual (mm)" offset={-15} position="insideBottom" />
+          </XAxis>
+          <YAxis>
+            <Label value="Probabilidade de excedência (%)" angle={-90} position="insideLeft" offset={-10} />
+          </YAxis>
           <Tooltip />
-          <Legend />
-          <Line type="monotone" dataKey="Probabilidade de excedência (%)" stroke="#8884d8" activeDot={{ r: 8 }} />
+          <Line type="monotone" dataKey="F" stroke="#8884d8" activeDot={{ r: 8 }} />
         </LineChart>
       </ChartWrapper>
 
@@ -110,60 +120,3 @@ export default function Report({ data }) {
     </ReportWrapper>
   );
 }
-
-const MessageContainer = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 200px;
-  margin-top: 40px;
-`;
-
-const Message = styled.p`
-  font-size: 18px;
-  color: #333;
-`;
-
-const ReportWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  margin-top: 40px;
-  background-color: #ffffff;
-  border-radius: 8px;
-  padding: 20px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-`;
-
-const WarningMessage = styled.div`
-  display: flex;
-  width: 150px;
-  height: 80px;
-`
-
-const Table = styled.table`
-  border-collapse: collapse;
-  width: 100%;
-  text-align: center;
-  margin-top: 20px;
-
-  th,
-  td {
-    border: 1px solid #ccc;
-    padding: 10px;
-  }
-
-  th {
-    background-color: #f2f2f2;
-  }
-
-  tbody tr:nth-child(odd) {
-    background-color: #f8f8f8;
-  }
-
-  tbody tr:hover {
-    background-color: #ddd;
-  }
-`;
-

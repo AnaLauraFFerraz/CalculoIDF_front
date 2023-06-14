@@ -54,8 +54,14 @@ export const ReportWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
+  margin-top: 40px;
+  background-color: #ffffff;
+  border-radius: 8px;
   padding: 20px;
-`
+  box-sizing: border-box;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+`;
 
 export const ChartWrapper = styled.div`
   width: 100%;
@@ -64,28 +70,48 @@ export const ChartWrapper = styled.div`
   margin-top: 10px;
 `
 
-export const TableWrapper = styled.table`
-  border-collapse: collapse;
-  margin-top: 10px;
-  font-size: 10px;
-  text-align: left;
-`
-
-export const TableCell = styled.td`
-  border: 1px;
-  padding: 10px;
-`
-
-export const TextareaWrapper = styled.div`
-  margin-top: 10px;
-  width: 100%;
-  max-width: 800px;
-`
-
-export const Textarea = styled.textarea`
-  width: 100%;
+export const MessageContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   height: 200px;
-  resize: none;
+  margin-top: 40px;
+`;
+
+export const Message = styled.p`
+  font-size: 18px;
+  color: #333;
+`;
+
+export const WarningMessage = styled.div`
+  display: flex;
+  width: 150px;
+  height: 80px;
+`
+
+export const Table = styled.table`
+  border-collapse: collapse;
+  width: 100%;
+  text-align: center;
+  margin-top: 20px;
+
+  th,
+  td {
+    border: 1px solid #ccc;
+    padding: 10px;
+  }
+
+  th {
+    background-color: #f2f2f2;
+  }
+
+  tbody tr:nth-child(odd) {
+    background-color: #f8f8f8;
+  }
+
+  tbody tr:hover {
+    background-color: #ddd;
+  }
 `
 
 // -----------------------------------------
