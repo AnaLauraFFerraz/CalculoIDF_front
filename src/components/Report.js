@@ -1,13 +1,14 @@
 import React from "react";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Label } from "recharts";
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Label } from "recharts";
 import { 
   ReportWrapper,
   MessageContainer,
   Message,
   WarningMessage,
-  ChartWrapper,
   Table
-} from "../style/styles";
+} from "../style/report.styles";
+import { Instructions } from "../style/general.styles";
+import AttentionSign from "../style/assets/attention-sign.png"
 
 export default function Report({ data }) {
   if (!data) {
@@ -30,7 +31,6 @@ export default function Report({ data }) {
   }
 
   const chartData = processDataForChart(data.graph_data);
-  console.log(chartData)
 
   function processDataForChart(graph_data) {
     const { F, P_dist } = graph_data;
@@ -40,35 +40,44 @@ export default function Report({ data }) {
       "Pmax": P_dist[index],
     }));
   }
-  
+
+  const min = Math.min(...chartData.map(item => item.Pmax));
+  const max = Math.max(...chartData.map(item => item.Pmax));
+  const ticks = chartData.map(item => item.Pmax);
+
   return (
     <ReportWrapper>
-      <h2>Dados IDF</h2>
+      <h1>Dados da relação Intensidade-Duração-Frequência (IDF)</h1>
 
       {data.sample_size_above_30_years === false && (
         <WarningMessage>
-          Atenção: A amostra possui menos de 30 anos, ...
+          <img src={AttentionSign} alt={"attention"} />
+          <Message>
+            {`Atenção: A série de dados fornecida contém menos de 30 anos completos.
+            Isso pode afetar a qualidade dos resultados da análise.`}
+          </Message>
         </WarningMessage>
       )}
 
-      <ChartWrapper>
-        <LineChart
-          width={600}
-          height={300}
-          data={chartData}
-          margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
-        >
+      <ResponsiveContainer className={"graph"} width="100%" height={400}>
+        <LineChart data={chartData} margin={{ top: 30, right: 30, left: 30, bottom: 30 }}>
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="Pmax">
-            <Label value="Precipitação máxima anual (mm)" offset={-15} position="insideBottom" />
+          <XAxis
+            dataKey="Pmax" 
+            type="number" 
+            domain={[min, max]} 
+            ticks={ticks}
+            tickFormatter={(tick) => tick.toFixed(1)}>
+            <Label value="Precipitação máxima anual (mm)" position="bottom" offset={10} />
           </XAxis>
-          <YAxis>
-            <Label value="Probabilidade de excedência (%)" angle={-90} position="insideLeft" offset={-10} />
+          <YAxis interval={0}>
+            <Label angle={-90} position="insideBottomLeft" offset={20} >Probabilidade de excedência (%)</Label>
           </YAxis>
           <Tooltip />
           <Line type="monotone" dataKey="F" stroke="#8884d8" activeDot={{ r: 8 }} />
+          <Label value="Precipitação máxima anual (mm) x Probabilidade de Excedência (%)" offset={0} position="top" />
         </LineChart>
-      </ChartWrapper>
+      </ResponsiveContainer>
 
       <Table>
         <thead>
@@ -116,7 +125,12 @@ export default function Report({ data }) {
           </tr>
         </tbody>
       </Table>
-
+      <Instructions>
+        <p>Parâmetros de qualidade dos erros relativos: </p>
+        <p>Erro relativo médio &lsaquo; 5%: Excelente</p>
+        <p>Erro relativo médio &lsaquo; 10%: Bom</p>
+        <p>{`Foi utilizada a distribuição de probabilidade ${data.dist} no cálculo da IDF para essa série de dados.`}</p>
+      </Instructions>
     </ReportWrapper>
   );
 }
