@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { InputWrapper, FileInput, SubmitButton } from "../style/styles";
+import { InputWrapper, FileInput, SubmitButton } from "../style/input.styles";
+import { ClipLoader } from "react-spinners";
 
-export default function Input({ onUpload }) {
+export default function Input({ onUpload, loading }) {
   const [csvFile, setCsvFile] = useState(null);
 
   function handleFileUpload(e) {
@@ -11,9 +12,7 @@ export default function Input({ onUpload }) {
 
   function handleSubmit(e) {
     e.preventDefault();
-    if (onUpload) {
-      onUpload(csvFile);
-    }
+    if (onUpload) onUpload(csvFile);
   }
 
   return (
@@ -25,7 +24,7 @@ export default function Input({ onUpload }) {
         onChange={handleFileUpload}
       />
       <SubmitButton type="submit">
-        Upload
+        {loading ? <ClipLoader color="#FFFFFF" size={20} /> : "Upload"}
       </SubmitButton>
     </InputWrapper>
   );
