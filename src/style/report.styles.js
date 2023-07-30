@@ -5,19 +5,23 @@ export const ReportWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100%;
-  margin-top: 40px;
+  margin: 40px;
   background-color: #ffffff;
   border-radius: 8px;
-  padding: 20px;
+  padding: 30px;
   box-sizing: border-box;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   h1 {
-    margin: 25px;
     font-size: 24px;
+    margin-bottom: 10px;
   }
   h2 {
-    margin: 25px;
-    font-size: 24px;
+    margin: 40px 0 15px;
+    font-size: 20px;
+  }
+  ul {
+    font-size: 16px;
+    list-style-type: square;
   }
   .graph {
     display: flex;
@@ -31,6 +35,7 @@ export const MessageContainer = styled.div`
   align-items: center;
   height: 200px;
   margin-top: 40px;
+  color: #333;
 `;
 
 export const Message = styled.p`
@@ -54,12 +59,25 @@ export const WarningMessage = styled.div`
     height: 40px;
     margin: 15px;
   }
-`
+`;
+
+export const Equation = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 60px;
+  box-sizing: border-box;
+  font-size: 20px;
+  line-height: 20px;
+  text-decoration: none;
+  color: #333;
+  
+`;
 
 export const Table = styled.table`
   border-collapse: collapse;
   width: 90%;
-  max-width: 900px;
+  max-width: 800px;
   text-align: center;
   margin: 15px;
   box-sizing: border-box;
@@ -76,4 +94,4 @@ export const Table = styled.table`
   tbody tr:hover {
     background-color: #ddd;
   }
-`
+`;

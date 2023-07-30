@@ -5,12 +5,16 @@ import {
   MessageContainer,
   Message,
   WarningMessage,
-  Table
+  Table,
+  Equation
 } from "../style/report.styles";
-import { Instructions } from "../style/general.styles";
 import AttentionSign from "../style/assets/attention-sign.png"
+import 'katex/dist/katex.min.css';
+import { BlockMath } from 'react-katex';
+import { Instructions } from "../style/general.styles";
 
 export default function Report({ data }) {
+  console.log(data)
   if (!data) {
     return (
       <MessageContainer>
@@ -24,7 +28,7 @@ export default function Report({ data }) {
   if (isString) {
     return (
       <ReportWrapper>
-        <h2>Dados IDF</h2>
+        <h1>Dados da relação Intensidade-Duração-Frequência (IDF)</h1>
         <Message>{data}</Message>
       </ReportWrapper>
     );
@@ -59,7 +63,7 @@ export default function Report({ data }) {
         </WarningMessage>
       )}
 
-      <ResponsiveContainer className={"graph"} width="100%" height={400}>
+      <ResponsiveContainer className={"graph"} width="90%" height={400}>
         <LineChart data={chartData} margin={{ top: 30, right: 30, left: 30, bottom: 30 }}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis
@@ -78,11 +82,21 @@ export default function Report({ data }) {
           <Label value="Precipitação máxima anual (mm) x Probabilidade de Excedência (%)" offset={0} position="top" />
         </LineChart>
       </ResponsiveContainer>
+      
+      <h2>Equação de Ven Te Chow</h2>
+      <Equation>
+        <BlockMath math="i = \frac{{k \cdot Tr^m}}{{c + td^n}}" />
+        <ul>
+          <li>i: intensidade de precipitação em mm/h</li>
+          <li>Tr: tempo de retorno em anos</li>
+          <li>td: tempo de duração em minutos</li>
+        </ul>
+      </Equation>
 
       <Table>
         <thead>
           <tr>
-            <th>Intervalo</th>
+            <th>Intervalo (min)</th>
             <th>k</th>
             <th>m</th>
             <th>c</th>
@@ -91,14 +105,14 @@ export default function Report({ data }) {
         </thead>
         <tbody>
           <tr>
-            <td>Intervalo 1 (5 &le; td &le; 60)</td>
+            <td>5 &le; td &le; 60</td>
             <td>{data.parameters.parameters_1.k1}</td>
             <td>{data.parameters.parameters_1.m1}</td>
             <td>{data.parameters.parameters_1.c1}</td>
             <td>{data.parameters.parameters_1.n1}</td>
           </tr>
           <tr>
-            <td>Intervalo 2 (60 &le; td &le; 1440)</td>
+            <td>60 &le; td &le; 1440</td>
             <td>{data.parameters.parameters_2.k2}</td>
             <td>{data.parameters.parameters_2.m2}</td>
             <td>{data.parameters.parameters_2.c2}</td>
@@ -110,26 +124,29 @@ export default function Report({ data }) {
       <Table>
         <thead>
           <tr>
-            <th>Intervalo</th>
-            <th>Erro Relativo Médio</th>
+            <th>Intervalo (min)</th>
+            <th>Erro Relativo Médio (%)</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td>Intervalo 1 (5 &le; td &le; 60)</td>
-            <td>{data.mean_relative_errors.interval_1}</td>
+            <td>5 &le; td &le; 60</td>
+            <td>{data.mean_relative_errors.interval_1.toFixed(4)}</td>
           </tr>
           <tr>
-            <td>Intervalo 2 (60 &le; td &le; 1440)</td>
-            <td>{data.mean_relative_errors.interval_2}</td>
+            <td>60 &le; td &le; 1440</td>
+            <td>{data.mean_relative_errors.interval_2.toFixed(4)}</td>
           </tr>
         </tbody>
       </Table>
       <Instructions>
-        <p>Parâmetros de qualidade dos erros relativos: </p>
-        <p>Erro relativo médio &lsaquo; 5%: Excelente</p>
-        <p>Erro relativo médio &lsaquo; 10%: Bom</p>
-        <p>{`Foi utilizada a distribuição de probabilidade ${data.dist} no cálculo da IDF para essa série de dados.`}</p>
+        <p>Os parâmetros de qualidade dos erros relativos são usados para avaliar a precisão dos cálculos realizados. Eles são determinados da seguinte maneira:</p>
+        <ul>
+          <li>Erro relativo médio &lsaquo; 5%: Excelente</li>
+          <li>Erro relativo médio &lsaquo; 10%: Bom</li>
+        </ul>
+        <h2>Considerações</h2>
+        <p>{`A distribuição de probabilidade utilizada no cálculo da IDF para essa série de dados foi a distribuição ${data.dist}.`}</p>
       </Instructions>
     </ReportWrapper>
   );

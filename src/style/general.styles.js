@@ -3,18 +3,16 @@ import styled from "styled-components";
 export const Instructions = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  border-radius: 8px;
-  box-sizing: border-box;
   width: 60%;
   min-width: 200px;
+  justify-content: flex-start;
+  box-sizing: border-box;
+  line-height: 24px;
   h2 {
     font-size: 20px;
     margin-bottom: 15px;
   }
   ul {
-    line-height: 20px;
     list-style-type: square;
   }
 `
