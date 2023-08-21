@@ -1,19 +1,41 @@
 import React from "react";
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Label } from "recharts";
+import { Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Label, ComposedChart, Scatter, Legend } from "recharts";
 import { 
   ReportWrapper,
   MessageContainer,
   Message,
   WarningMessage,
   Table,
-  Equation
+  Equation,
 } from "../style/report.styles";
 import AttentionSign from "../style/assets/attention-sign.png"
 import 'katex/dist/katex.min.css';
 import { BlockMath } from 'react-katex';
 import { Instructions } from "../style/general.styles";
+import { useState } from "react";
 
 export default function Report({ data }) {
+  const [legendOpacity, setLegendOpacity] = useState({
+      P_max: 1,
+      P_dist: 1,
+  })
+
+  function handleMouseEnter(e) {
+    const { dataKey } = e;
+
+    setLegendOpacity({
+      ...legendOpacity, [dataKey]: 0.5 
+    });
+  };
+
+  function handleMouseLeave(e) {
+    const { dataKey } = e;
+
+    setLegendOpacity({
+      ...legendOpacity, [dataKey]: 1
+    });
+  };
+
   console.log(data)
   if (!data) {
     return (
@@ -33,15 +55,15 @@ export default function Report({ data }) {
       </ReportWrapper>
     );
   }
-  console.log(data)
   const chartData = processDataForChart(data.graph_data);
 
   function processDataForChart(graph_data) {
-    const { F, P_dist } = graph_data;
+    const { F, P_max, P_dist } = graph_data;
     return F.map((f, index) => ({
       name: index,
       "F": f,
-      "Pmax": P_dist[index],
+      "Pmax": P_max[index],
+      "P_dist": P_dist[index],
     }));
   }
 
@@ -63,7 +85,7 @@ export default function Report({ data }) {
         </WarningMessage>
       )}
 
-      <ResponsiveContainer className={"graph"} width="90%" height={400}>
+      {/* <ResponsiveContainer className={"graph"} width="90%" height={400}>
         <LineChart data={chartData} margin={{ top: 30, right: 30, left: 30, bottom: 30 }}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis
@@ -81,12 +103,41 @@ export default function Report({ data }) {
           <Line type="monotone" dataKey="F" stroke="#8884d8" activeDot={{ r: 8 }} />
           <Label value="Precipitação máxima anual (mm) x Probabilidade de não excedência (%)" offset={0} position="top" />
         </LineChart>
+      </ResponsiveContainer> */}
+
+      <ResponsiveContainer className={"graph"} width="90%" height={500}>
+        <ComposedChart data={chartData} margin={{ top: 30, right: 30, left: 30, bottom: 30 }}>
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis
+            dataKey="Pmax" 
+            type="number" 
+            domain={[min, max]} 
+            ticks={ticks}
+            tickFormatter={(tick) => tick.toFixed(1)}>
+            <Label value="Precipitação máxima anual (mm)" position="bottom" offset={10} />
+          </XAxis>
+          <YAxis interval={0}>
+            <Label angle={-90} position="insideBottomLeft" offset={20} >Probabilidade de excedência (%)</Label>
+          </YAxis>
+          <Tooltip />
+          <Legend verticalAlign="top" height={46} layout="vertical" onMouseEnter={(e) => handleMouseEnter(e)} onMouseLeave={(e) => handleMouseLeave(e)} />
+          <Line name={`Precipitação obtida pela distribuição ${data.dist} (mm)`} type="monotone" dataKey="P_dist" strokeOpacity={legendOpacity.P_dist} stroke="#82ca9d" activeDot={{ r: 8 }} />
+          <Scatter name="Precipitação máxima anual observada (mm)" dataKey="Pmax" strokeOpacity={legendOpacity.P_max} stroke="#8884d8" />
+        </ComposedChart>
       </ResponsiveContainer>
-      
+
+
       <h2>Considerações</h2>
-      <p>{`A distribuição de probabilidade utilizada no cálculo da IDF para essa série de dados foi a distribuição ${data.dist}.`}</p>
-      <p>{`Foram analisados os dados para o período de ${data.year_range.first_year} a ${data.year_range.last_year}.`}</p>
-      
+      <Instructions>
+        <ul>
+          <li>{`Foram analisados os dados para o período de ${data.year_range.last_year - data.year_range.first_year} anos (${data.year_range.first_year} a ${data.year_range.last_year}).`}</li>
+          <li>{`A distribuição de probabilidade utilizada no cálculo da IDF para essa série de dados foi a distribuição ${data.dist}.`}</li>
+          {data.empty_consistent_data && (
+            <li>{`A série de dados fornecida não possui dados consistidos, dessa forma, foram utilizados os dados brutos para a análise.`}</li>
+          )}
+        </ul>
+      </Instructions>
+
       <h2>Equação IDF</h2>
       <Equation>
         <BlockMath math="i = \frac{{k \cdot Tr^m}}{{(c + td)^n}}" />
