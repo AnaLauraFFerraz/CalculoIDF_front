@@ -33,7 +33,7 @@ export default function Report({ data }) {
       </ReportWrapper>
     );
   }
-
+  console.log(data)
   const chartData = processDataForChart(data.graph_data);
 
   function processDataForChart(graph_data) {
@@ -85,6 +85,7 @@ export default function Report({ data }) {
       
       <h2>Considerações</h2>
       <p>{`A distribuição de probabilidade utilizada no cálculo da IDF para essa série de dados foi a distribuição ${data.dist}.`}</p>
+      <p>{`Foram analisados os dados para o período de ${data.year_range.first_year} a ${data.year_range.last_year}.`}</p>
       
       <h2>Equação IDF</h2>
       <Equation>
@@ -141,18 +142,17 @@ export default function Report({ data }) {
           <tr>
             <td>60 &le; td &le; 1440</td>
             <td>{data.mean_relative_errors.interval_2.toFixed(4)}</td>
-            <td>{data.mean_relative_errors.interval_1.toFixed(4)}</td>
             <td>{"data.ns.interval_2"}</td>
           </tr>
         </tbody>
       </Table>
-      <Instructions>
+      {/* <Instructions>
         <p>Os parâmetros de qualidade dos erros relativos são usados para avaliar a precisão dos cálculos realizados. Eles são determinados da seguinte maneira:</p>
         <ul>
           <li>Erro relativo médio &lsaquo; 5%: Excelente</li>
           <li>Erro relativo médio &lsaquo; 10%: Bom</li>
         </ul>
-      </Instructions>
+      </Instructions> */}
     </ReportWrapper>
   );
 }
