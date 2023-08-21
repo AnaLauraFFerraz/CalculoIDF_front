@@ -79,13 +79,16 @@ export default function Report({ data }) {
           </YAxis>
           <Tooltip />
           <Line type="monotone" dataKey="F" stroke="#8884d8" activeDot={{ r: 8 }} />
-          <Label value="Precipitação máxima anual (mm) x Probabilidade de Excedência (%)" offset={0} position="top" />
+          <Label value="Precipitação máxima anual (mm) x Probabilidade de não excedência (%)" offset={0} position="top" />
         </LineChart>
       </ResponsiveContainer>
       
-      <h2>Equação de Ven Te Chow</h2>
+      <h2>Considerações</h2>
+      <p>{`A distribuição de probabilidade utilizada no cálculo da IDF para essa série de dados foi a distribuição ${data.dist}.`}</p>
+      
+      <h2>Equação IDF</h2>
       <Equation>
-        <BlockMath math="i = \frac{{k \cdot Tr^m}}{{c + td^n}}" />
+        <BlockMath math="i = \frac{{k \cdot Tr^m}}{{(c + td)^n}}" />
         <ul>
           <li>i: intensidade de precipitação em mm/h</li>
           <li>Tr: tempo de retorno em anos</li>
@@ -126,16 +129,20 @@ export default function Report({ data }) {
           <tr>
             <th>Intervalo (min)</th>
             <th>Erro Relativo Médio (%)</th>
+            <th>NS</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td>5 &le; td &le; 60</td>
             <td>{data.mean_relative_errors.interval_1.toFixed(4)}</td>
+            <td>{"data.ns.interval_1"}</td>
           </tr>
           <tr>
             <td>60 &le; td &le; 1440</td>
             <td>{data.mean_relative_errors.interval_2.toFixed(4)}</td>
+            <td>{data.mean_relative_errors.interval_1.toFixed(4)}</td>
+            <td>{"data.ns.interval_2"}</td>
           </tr>
         </tbody>
       </Table>
@@ -145,8 +152,6 @@ export default function Report({ data }) {
           <li>Erro relativo médio &lsaquo; 5%: Excelente</li>
           <li>Erro relativo médio &lsaquo; 10%: Bom</li>
         </ul>
-        <h2>Considerações</h2>
-        <p>{`A distribuição de probabilidade utilizada no cálculo da IDF para essa série de dados foi a distribuição ${data.dist}.`}</p>
       </Instructions>
     </ReportWrapper>
   );
