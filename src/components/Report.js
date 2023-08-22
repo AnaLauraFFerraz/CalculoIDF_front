@@ -188,22 +188,25 @@ export default function Report({ data }) {
           <tr>
             <td>5 &le; td &le; 60</td>
             <td>{data.mean_relative_errors.interval_1.toFixed(4)}</td>
-            <td>{"data.ns.interval_1"}</td>
+            <td>{data.ns.parameter_1.toFixed(4)}</td>
           </tr>
           <tr>
             <td>60 &le; td &le; 1440</td>
             <td>{data.mean_relative_errors.interval_2.toFixed(4)}</td>
-            <td>{"data.ns.interval_2"}</td>
+            <td>{data.ns.parameter_2.toFixed(4)}</td>
           </tr>
         </tbody>
       </Table>
-      {/* <Instructions>
-        <p>Os parâmetros de qualidade dos erros relativos são usados para avaliar a precisão dos cálculos realizados. Eles são determinados da seguinte maneira:</p>
+      <Instructions>
+
+        <p>Os parâmetros de qualidade dos erros são usados para avaliar a precisão dos cálculos realizados. Eles são determinados da seguinte maneira:</p>
         <ul>
-          <li>Erro relativo médio &lsaquo; 5%: Excelente</li>
-          <li>Erro relativo médio &lsaquo; 10%: Bom</li>
+          <li>{`NS > 0,75: Muito bom`}</li>
+          <li>{`NS > 0,65: Bom`}</li>
+          <li>{`NS > 0,5: Satisfatório`}</li>
+          <li>{`NS <= 0,5: Insatisfatório`}</li>
         </ul>
-      </Instructions> */}
+      </Instructions>
     </ReportWrapper>
   );
 }
