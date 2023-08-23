@@ -12,7 +12,7 @@ import {
 } from 'chart.js';
 
 export default function IdfGraph({ data }){
-    const F = Object.values(data.graph_data.F);
+    const F = Object.values(data.graph_data.F).reverse();
     const P_max = Object.values(data.graph_data.P_max);
     const P_dist = Object.values(data.graph_data.P_dist);
     
@@ -20,12 +20,8 @@ export default function IdfGraph({ data }){
     arr.sort(sortfunction)
 
     function sortfunction(a, b){
-      return (a - b) //faz com que o array seja ordenado numericamente e de ordem crescente.
+      return (a - b)
     }
-    console.log(F.map((item, index) => ({
-      x: P_dist[index],
-      y: F[index]
-    })))
     
     ChartJS.register(
         CategoryScale,
@@ -41,7 +37,7 @@ export default function IdfGraph({ data }){
         labels: P_max.concat(P_dist),
         datasets: [
             {
-                label: 'P_max',
+                label: 'Valores observados',
                 data: F.map((item, index) => ({
                   x: P_max[index],
                   y: F[index]
@@ -49,9 +45,10 @@ export default function IdfGraph({ data }){
                 fill: false,
                 borderColor: '#8884d8',
                 tension: 0.1,
+                showLine: false
             },
             {
-                label: 'P_dist',
+                label: 'Valores teóricos',
                 data: F.map((item, index) => ({
                   x: P_dist[index],
                   y: F[index]
@@ -64,25 +61,25 @@ export default function IdfGraph({ data }){
     };
 
     const options = {
-        // responsive: true,
-        // plugins: {
-        //   legend: {
-        //     position: 'bottom',
-        //   },
-        // },
+        responsive: true,
+        plugins: {
+          legend: {
+            position: 'bottom',
+          },
+        },
         scales: {
             x: {
               type: 'linear',
                 title: {
                     display: true,
-                    text: 'Precipitação máxima anual observada (P_max e P_dist)'
+                    text: 'Precipitação máxima anual (mm)'
                 },
             },
             y: {
                 type: 'linear',
                 title: {
                     display: true,
-                    text: 'Probabilidade de excedência (F)'
+                    text: 'Probabilidade de excedência (%)'
                 },
                 min: 0,
                 max: 100
@@ -92,7 +89,7 @@ export default function IdfGraph({ data }){
 
     return (
         <>
-            <Line data={chartData} options={options} width={500} height={400} />;
+            <Line data={chartData} options={options} width={600} height={400} />;
         </>
     )
 }

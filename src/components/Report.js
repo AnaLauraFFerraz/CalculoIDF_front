@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { 
   ReportWrapper,
   MessageContainer,
@@ -12,13 +12,18 @@ import 'katex/dist/katex.min.css';
 import { BlockMath } from 'react-katex';
 import { Instructions } from "../style/general.styles";
 import IdfGraph from "./IdfGraph";
-// import IntensityGraphs from "./IntensityGraphs";
+import IntensityGraphs from "./IntensityGraphs";
 
 export default function Report({ data }) {
-  // console.log(data)
-  // const [iGraphData1, setIGraphData1] = useState(data.intensity_graph_data_1)
-  // const [iGraphData2, setIGraphData2] = useState(data.intensity_graph_data_2)
-  
+  const [iGraphData1, setIGraphData1] = useState(null);
+  const [iGraphData2, setIGraphData2] = useState(null);
+
+  useEffect(() => {
+    if (data) {
+      setIGraphData1(data.intensity_graph_data_1);
+      setIGraphData2(data.intensity_graph_data_2);
+    }
+  }, [data]);
 
   if (!data) {
     return (
@@ -68,7 +73,7 @@ export default function Report({ data }) {
         </ul>
       </Instructions>
       
-      {/* 
+      
       <h2>Intensidades Observadas x Intensidades Calculadas (5 &le; td &le; 60)</h2>
       <div>
         <IntensityGraphs data={iGraphData1} />
@@ -78,7 +83,7 @@ export default function Report({ data }) {
       <div>
         <IntensityGraphs data={iGraphData2} /> 
       </div>
-      */}
+     
 
       <h2>Equação IDF</h2>
       <Equation>
@@ -123,7 +128,7 @@ export default function Report({ data }) {
           <tr>
             <th>Intervalo (min)</th>
             <th>Erro Relativo Médio (%)</th>
-            <th>NS</th>
+            <th>Nash-Sutcliffe (NS)</th>
           </tr>
         </thead>
         <tbody>
