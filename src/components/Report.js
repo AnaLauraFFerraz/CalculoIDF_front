@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React from "react";
 import { 
   ReportWrapper,
   MessageContainer,
@@ -12,12 +12,13 @@ import 'katex/dist/katex.min.css';
 import { BlockMath } from 'react-katex';
 import { Instructions } from "../style/general.styles";
 import IdfGraph from "./IdfGraph";
-import IntensityGraphs from "./IntensityGraphs";
+// import IntensityGraphs from "./IntensityGraphs";
 
 export default function Report({ data }) {
-  const [iGraphData1, setIGraphData1] = useState(data.intensity_graph_data_1)
-  const [iGraphData2, setIGraphData2] = useState(data.intensity_graph_data_2)
-  console.log(iGraphData2)
+  // console.log(data)
+  // const [iGraphData1, setIGraphData1] = useState(data.intensity_graph_data_1)
+  // const [iGraphData2, setIGraphData2] = useState(data.intensity_graph_data_2)
+  
 
   if (!data) {
     return (
@@ -52,7 +53,9 @@ export default function Report({ data }) {
         </WarningMessage>
       )}
 
-      <IdfGraph data={data} />
+      <div>
+        <IdfGraph data={data} />
+      </div>
 
       <h2>Considerações</h2>
       <Instructions>
@@ -64,12 +67,18 @@ export default function Report({ data }) {
           )}
         </ul>
       </Instructions>
-
-      <h2>Intensidades Observadas x Intensidades Calculadas (5 &le; td &le; 60)</h2>
-      <IntensityGraphs data={iGraphData1} />
       
+      {/* 
+      <h2>Intensidades Observadas x Intensidades Calculadas (5 &le; td &le; 60)</h2>
+      <div>
+        <IntensityGraphs data={iGraphData1} />
+      </div>
+
       <h2>Intensidades Observadas x Intensidades Calculadas (60 &le; td &le; 1440)</h2>
-      <IntensityGraphs data={iGraphData2} />
+      <div>
+        <IntensityGraphs data={iGraphData2} /> 
+      </div>
+      */}
 
       <h2>Equação IDF</h2>
       <Equation>

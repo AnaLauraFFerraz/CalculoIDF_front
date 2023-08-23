@@ -8,6 +8,7 @@ export default function IntensityGraphs({ data }) {
     function processDataForIntensityGraph(data) {
         const { i_real, i_calculated, regression } = data;
         return i_real.map((value, index) => ({
+            "name": index,
             "i_real": value.toFixed(1),
             "i_calculated": i_calculated[index].toFixed(1),
             "regressionLine": (regression.slope * value + regression.intercept)
