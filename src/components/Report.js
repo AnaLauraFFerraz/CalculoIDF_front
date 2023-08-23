@@ -1,5 +1,4 @@
-import React from "react";
-import { Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Label, ComposedChart, Scatter, Legend } from "recharts";
+import React, {useState} from "react";
 import { 
   ReportWrapper,
   MessageContainer,
@@ -12,31 +11,14 @@ import AttentionSign from "../style/assets/attention-sign.png"
 import 'katex/dist/katex.min.css';
 import { BlockMath } from 'react-katex';
 import { Instructions } from "../style/general.styles";
-import { useState } from "react";
+import IdfGraph from "./IdfGraph";
+import IntensityGraphs from "./IntensityGraphs";
 
 export default function Report({ data }) {
-  const [legendOpacity, setLegendOpacity] = useState({
-      P_max: 1,
-      P_dist: 1,
-  })
+  const [iGraphData1, setIGraphData1] = useState(data.intensity_graph_data_1)
+  const [iGraphData2, setIGraphData2] = useState(data.intensity_graph_data_2)
+  console.log(iGraphData2)
 
-  function handleMouseEnter(e) {
-    const { dataKey } = e;
-
-    setLegendOpacity({
-      ...legendOpacity, [dataKey]: 0.5 
-    });
-  };
-
-  function handleMouseLeave(e) {
-    const { dataKey } = e;
-
-    setLegendOpacity({
-      ...legendOpacity, [dataKey]: 1
-    });
-  };
-
-  console.log(data)
   if (!data) {
     return (
       <MessageContainer>
@@ -55,21 +37,6 @@ export default function Report({ data }) {
       </ReportWrapper>
     );
   }
-  const chartData = processDataForChart(data.graph_data);
-
-  function processDataForChart(graph_data) {
-    const { F, P_max, P_dist } = graph_data;
-    return F.map((f, index) => ({
-      name: index,
-      "F": f,
-      "Pmax": P_max[index],
-      "P_dist": P_dist[index],
-    }));
-  }
-
-  const min = Math.min(...chartData.map(item => item.Pmax));
-  const max = Math.max(...chartData.map(item => item.Pmax));
-  const ticks = chartData.map(item => item.Pmax);
 
   return (
     <ReportWrapper>
@@ -85,58 +52,24 @@ export default function Report({ data }) {
         </WarningMessage>
       )}
 
-      {/* <ResponsiveContainer className={"graph"} width="90%" height={400}>
-        <LineChart data={chartData} margin={{ top: 30, right: 30, left: 30, bottom: 30 }}>
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis
-            dataKey="Pmax" 
-            type="number" 
-            domain={[min, max]} 
-            ticks={ticks}
-            tickFormatter={(tick) => tick.toFixed(1)}>
-            <Label value="Precipitação máxima anual (mm)" position="bottom" offset={10} />
-          </XAxis>
-          <YAxis interval={0}>
-            <Label angle={-90} position="insideBottomLeft" offset={20} >Probabilidade de excedência (%)</Label>
-          </YAxis>
-          <Tooltip />
-          <Line type="monotone" dataKey="F" stroke="#8884d8" activeDot={{ r: 8 }} />
-          <Label value="Precipitação máxima anual (mm) x Probabilidade de não excedência (%)" offset={0} position="top" />
-        </LineChart>
-      </ResponsiveContainer> */}
-
-      <ResponsiveContainer className={"graph"} width="90%" height={500}>
-        <ComposedChart data={chartData} margin={{ top: 30, right: 30, left: 30, bottom: 30 }}>
-          <CartesianGrid strokeDasharray="3 3" />
-          <XAxis
-            dataKey="Pmax" 
-            type="number" 
-            domain={[min, max]} 
-            ticks={ticks}
-            tickFormatter={(tick) => tick.toFixed(1)}>
-            <Label value="Precipitação máxima anual (mm)" position="bottom" offset={10} />
-          </XAxis>
-          <YAxis interval={0}>
-            <Label angle={-90} position="insideBottomLeft" offset={20} >Probabilidade de excedência (%)</Label>
-          </YAxis>
-          <Tooltip />
-          <Legend verticalAlign="top" height={46} layout="vertical" onMouseEnter={(e) => handleMouseEnter(e)} onMouseLeave={(e) => handleMouseLeave(e)} />
-          <Line name={`Precipitação obtida pela distribuição ${data.dist} (mm)`} type="monotone" dataKey="P_dist" strokeOpacity={legendOpacity.P_dist} stroke="#82ca9d" activeDot={{ r: 8 }} />
-          <Scatter name="Precipitação máxima anual observada (mm)" dataKey="Pmax" strokeOpacity={legendOpacity.P_max} stroke="#8884d8" />
-        </ComposedChart>
-      </ResponsiveContainer>
-
+      <IdfGraph data={data} />
 
       <h2>Considerações</h2>
       <Instructions>
         <ul>
-          <li>{`Foram analisados os dados para o período de ${data.year_range.last_year - data.year_range.first_year} anos (${data.year_range.first_year} a ${data.year_range.last_year}).`}</li>
+          <li>{`Foram analisados os dados para o período de ${data.year_range.last_year - data.year_range.first_year + 1} anos (${data.year_range.first_year} a ${data.year_range.last_year}).`}</li>
           <li>{`A distribuição de probabilidade utilizada no cálculo da IDF para essa série de dados foi a distribuição ${data.dist}.`}</li>
-          {data.empty_consistent_data && (
+          {!data.empty_consistent_data && (
             <li>{`A série de dados fornecida não possui dados consistidos, dessa forma, foram utilizados os dados brutos para a análise.`}</li>
           )}
         </ul>
       </Instructions>
+
+      <h2>Intensidades Observadas x Intensidades Calculadas (5 &le; td &le; 60)</h2>
+      <IntensityGraphs data={iGraphData1} />
+      
+      <h2>Intensidades Observadas x Intensidades Calculadas (60 &le; td &le; 1440)</h2>
+      <IntensityGraphs data={iGraphData2} />
 
       <h2>Equação IDF</h2>
       <Equation>
