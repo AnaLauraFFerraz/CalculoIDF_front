@@ -15,6 +15,9 @@ import IdfGraph from "./IdfGraph";
 import IntensityGraphs from "./IntensityGraphs";
 
 export default function Report({ data }) {
+  if (data)
+    console.log("Dados do Python: ", data)
+
   const [iGraphData1, setIGraphData1] = useState(null);
   const [iGraphData2, setIGraphData2] = useState(null);
 
@@ -44,17 +47,36 @@ export default function Report({ data }) {
     );
   }
 
+  const emptyYearsData = data.empty_years
+  let formattedYear = ""
+
+  if (Array.isArray(emptyYearsData)) {
+    emptyYearsData.forEach((year, index) => {
+        index === emptyYearsData.length - 1 ? 
+        formattedYear += `${year}`
+            : formattedYear += `${year}, `
+    });
+  }
+
   return (
     <ReportWrapper>
       <h1>Dados da relação Intensidade-Duração-Frequência (IDF)</h1>
 
-      {data.sample_size_above_30_years === false && (
+      {(data.sample_size_above_30_years === false || data.empty_years) && (
         <WarningMessage>
           <img src={AttentionSign} alt={"attention"} />
-          <Message>
-            {`Atenção: A série de dados fornecida contém menos de 30 anos completos.
-            Isso pode afetar a qualidade dos resultados da análise.`}
-          </Message>
+          <ul>
+            {data.sample_size_above_30_years === false ? 
+              <Message>{`A série de dados fornecida contém menos de 30 anos completos.
+                Isso pode afetar a qualidade dos resultados da análise.`}
+              </Message> : ""}
+            
+            {data.empty_years ? 
+              <Message>
+                {`Foram analisados os dados de ${data.year_range.first_year} a ${data.year_range.last_year}, 
+                  sendo que os anos ${formattedYear} não dispunham de dados de nenhum mês.`}
+              </Message> : ""}
+          </ul>
         </WarningMessage>
       )}
 
@@ -65,7 +87,7 @@ export default function Report({ data }) {
       <h2>Considerações</h2>
       <Instructions>
         <ul>
-          <li>{`Foram analisados os dados para o período de ${data.year_range.last_year - data.year_range.first_year + 1} anos (${data.year_range.first_year} a ${data.year_range.last_year}).`}</li>
+          <li>{`Foram analisados os dados para um período de ${data.year_range.last_year - data.year_range.first_year + 1} anos (${data.year_range.first_year} a ${data.year_range.last_year}).`}</li>
           <li>{`A distribuição de probabilidade utilizada no cálculo da IDF para essa série de dados foi a distribuição ${data.dist}.`}</li>
           {!data.empty_consistent_data && (
             <li>{`A série de dados fornecida não possui dados consistidos, dessa forma, foram utilizados os dados brutos para a análise.`}</li>

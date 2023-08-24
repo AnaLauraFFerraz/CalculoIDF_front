@@ -89,7 +89,7 @@ export default function IdfGraph({ data }){
 
     return (
         <>
-            <Line data={chartData} options={options} width={600} height={400} />;
+            <Line data={chartData} options={options} width={600} height={400} />
         </>
     )
 }

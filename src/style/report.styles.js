@@ -38,7 +38,8 @@ export const MessageContainer = styled.div`
   color: #333;
 `;
 
-export const Message = styled.p`
+export const Message = styled.li`
+  margin: 5px;
   color: #333;
   font-size: 18px;
   line-height: 20px;
@@ -49,15 +50,18 @@ export const WarningMessage = styled.div`
   align-items: center;
   width: 80%;
   max-width: 650px;
-  height: 80px;
-  margin: 15px;
+  min-height: 80px;
+  margin: 20px 0 30px;
+  padding: 12px;
+  box-sizing: border-box;
   border: solid 1px;
   border-radius: 8px;
   background-color: lightsteelblue;
   img {
-    width: 40px;
-    height: 40px;
+    width: 60px;
+    height: 60px;
     margin: 15px;
+    margin-right: 30px;
   }
 `;
 
