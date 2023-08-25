@@ -45,6 +45,13 @@ export const Message = styled.li`
   line-height: 20px;
 `;
 
+export const NoData = styled.p`
+  margin: 5px;
+  color: #333;
+  font-size: 18px;
+  line-height: 20px;
+`;
+
 export const WarningMessage = styled.div`
   display: flex;
   align-items: center;

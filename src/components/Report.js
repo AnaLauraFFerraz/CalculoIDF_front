@@ -3,11 +3,12 @@ import {
   ReportWrapper,
   MessageContainer,
   Message,
+  NoData,
   WarningMessage,
   Table,
   Equation,
 } from "../style/report.styles";
-import AttentionSign from "../style/assets/attention-sign.png"
+import AttentionSign from "../style/assets/attention-sign.png"; 
 import 'katex/dist/katex.min.css';
 import { BlockMath } from 'react-katex';
 import { Instructions } from "../style/general.styles";
@@ -21,7 +22,7 @@ export default function Report({ data }) {
   if (!data) {
     return (
       <MessageContainer>
-        <Message>Nenhum dado disponível. Faça o upload de um arquivo CSV.</Message>
+        <NoData>Nenhum dado disponível. Faça o upload de um arquivo CSV.</NoData>
       </MessageContainer>
     );
   }
@@ -32,7 +33,7 @@ export default function Report({ data }) {
     return (
       <ReportWrapper>
         <h1>Dados da relação Intensidade-Duração-Frequência (IDF)</h1>
-        <Message>{data}</Message>
+        <NoData>{data}</NoData>
       </ReportWrapper>
     );
   }
