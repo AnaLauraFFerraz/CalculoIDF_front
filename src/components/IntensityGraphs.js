@@ -22,6 +22,8 @@ export default function IntensityGraphs({ data }) {
     
     const regression = i_real.map((item) => (slope * item + intercept))
 
+    let interceptStr = intercept < 0 ? `${intercept.toFixed(4)}` : `+ ${intercept.toFixed(4)}`;
+
     ChartJS.register(
         CategoryScale,
         LinearScale,
@@ -47,7 +49,7 @@ export default function IntensityGraphs({ data }) {
                 showLine: false
             },
             {
-                label: `f(x) = ${slope.toFixed(4)}x + ${intercept.toFixed(4)}`,
+                label: `f(x) = ${slope.toFixed(4)}x ${interceptStr}`,
                 data: i_real.map((item, index) => ({
                   x: item,
                   y: regression[index]
@@ -86,7 +88,7 @@ export default function IntensityGraphs({ data }) {
 
     return (
         <>
-            <Line data={chartData} options={options} width={600} height={400} />;
+            <Line data={chartData} options={options} width={600} height={400} />
         </>
     )
 }
