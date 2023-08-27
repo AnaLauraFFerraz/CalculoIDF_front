@@ -56,6 +56,7 @@ export default function IdfGraph({ data }){
                 fill: false,
                 borderColor: '#ff7300',
                 tension: 0.1,
+                pointRadius: 0
             },
         ],
     };
