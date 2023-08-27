@@ -57,6 +57,7 @@ export default function IntensityGraphs({ data }) {
                 fill: false,
                 borderColor: '#ff7300',
                 tension: 0.1,
+                pointRadius: 0
             },
         ],
     };
