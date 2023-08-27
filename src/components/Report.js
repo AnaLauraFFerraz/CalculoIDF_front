@@ -82,7 +82,7 @@ export default function Report({ data }) {
         <ul>
           <li>{`Foram analisados os dados para um período de ${totalYears} anos (${data.year_range.first_year} a ${data.year_range.last_year}).`}</li>
           <li>{`A distribuição de probabilidade utilizada no cálculo da IDF para essa série de dados foi a distribuição ${data.dist}.`}</li>
-          {!data.empty_consistent_data && (
+          {data.empty_consistent_data && (
             <li>{`A série de dados fornecida não possui dados consistidos, dessa forma, foram utilizados os dados brutos para a análise.`}</li>
           )}
         </ul>
