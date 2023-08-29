@@ -14,8 +14,8 @@ export default function About() {
             <Text>
                 Para obter as curvas IDF, os dados históricos de precipitação são analisados e ajustados a modelos matemáticos, como a equação de Gumbel, que permitem estimar a intensidade de precipitação para diferentes durações e tempos de retorno. A análise envolve o processamento e a interpretação de séries temporais de dados de chuva, geralmente obtidos a partir de estações meteorológicas ou redes de monitoramento hidrológico. A escolha do modelo e a qualidade dos dados de entrada são fatores críticos que influenciam a precisão das curvas IDF e, consequentemente, o desempenho das infraestruturas hídricas projetadas com base nessas informações.
             </Text>
-            <Link to="/"> {/* Adicione o componente Link para a página principal */}
-                <BackButton>Voltar</BackButton> {/* Adicione o botão de voltar */}
+            <Link to="/">
+                <BackButton>Voltar</BackButton>
             </Link>
         </Container>
     )
